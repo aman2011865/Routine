@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scheduler - Weekly Planner</title>
+    <meta name="description" content="Scheduler: Modern, secure, and futuristic weekly planner and study companion." />
+    <meta name="theme-color" content="#7f5af0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    </head>
+    <style>
+        /* ==== ROOT VARIABLES ==== */
+        :root {
+            --clr-primary: #7f5af0;
+            --clr-primary-light: #a079f7;
+            --clr-accent: #22d3ee;
+            --clr-bg: rgba(10, 10, 46, 0.9);
+            --clr-bg-blur: rgba(10, 10, 20, 0.4);
+            --clr-text: #e0e6f5;
+            --clr-muted: #8f95a3;
+            --clr-error: #f87171;
+            --border-radius: 14px;
+            --transition-fast: 0.25s ease-in-out;
+        }
+
+        /* ==== BASE STYLES ==== */
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0d0d19, #121227 70%);
+            font-family: 'Outfit', sans-serif;
+            color: var(--clr-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1rem 3rem;
+        }
+
+        h1 {
+            margin: 2rem 0 0.5rem;
+            font-weight: 600;
+            font-size: 2.6rem;
+            letter-spacing: 0.06em;
+            user-select: none;
+            text-align: center;
+        }
+
+        p.subtitle {
+            margin: 0 0 1rem;
+            color: var(--clr-muted);
+            font-weight: 400;
+            font-size: 1rem;
+            text-align: center;
+            user-select: none;
+        }
+        
+        #user-greeting {
+            color: var(--clr-accent);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+        }
+
+        /* ==== SECTION HEADERS & aS ==== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            user-select: none;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .action-as {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .action-as a {
+            padding: 0.5rem 1rem;
+            background-color: var(--clr-primary);
+            color: var(--clr-text);
+            font-size: 0.9rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+
+        .action-as a:hover {
+            background-color: var(--clr-primary-light);
+        }
+
+        /* ==== TUITION TIMINGS SECTION ==== */
+        .tuition-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem 1.5rem 1.8rem;
+            border-radius: var(--border-radius);
+            background: var(--clr-bg);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px -20px var(--clr-primary-light);
+            border: 1.5px solid var(--clr-primary-light);
+        }
+
+        .tuition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.4rem;
+        }
+
+        .tuition-card {
+            position: relative;
+            background: var(--clr-bg-blur);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.25rem;
+            box-shadow: inset 0 0 10px 1px rgba(255 255 255 / 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            user-select: none;
+        }
+
+        .tuition-card input[type="text"] {
+            background: transparent;
+            border: none;
+            color: var(--clr-text);
+            font-style: italic;
+            letter-spacing: 0.015em;
+            user-select: text;
+            outline-offset: 2px;
+            outline-color: var(--clr-primary-light);
+            transition: border-color 0.25s ease;
+            width: 100%;
+            padding: 0;
+        }
+
+        .tuition-card input[type="text"]:focus {
+            border-bottom: 1.5px solid var(--clr-accent);
+            outline: none;
+        }
+
+        .tuition-day {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--clr-accent);
+            flex-shrink: 0;
+        }
+
+        .tuition-time {
+            font-size: 0.95rem;
+        }
+
+        .tuition-desc {
+            font-size: 0.95rem;
+        }
+
+        .tuition-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--clr-error);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+
+        /* ==== CHECKBOX ==== */
+        label.check-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2.5px solid var(--clr-accent);
+            cursor: pointer;
+            transition: background-color var(--transition-fast), border-color var(--transition-fast);
+            user-select: none;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        label.check-container:hover {
+            border-color: var(--clr-primary);
+        }
+
+        label.check-container input[type="checkbox"] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .checkmark {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: transparent;
+            pointer-events: none;
+            transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+            box-sizing: border-box;
+            margin: auto;
+            position: relative;
+            user-select: none;
+        }
+
+        label.check-container input[type="checkbox"]:checked + .checkmark {
+            background: var(--clr-primary);
+            box-shadow: none;
+        }
+
+        label.check-container input[type="checkbox"]:checked + .checkmark::before {
+            content: '✔';
+            color: var(--clr-text);
+            font-size: 13px;
+            line-height: 14px;
+            text-align: center;
+            display: block;
+            transform: translateY(-1px);
+            user-select: none;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ==== WEEKLY SCHEDULE ==== */
+        .day-section {
+            background: var(--clr-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1.5rem 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 0 25px -20px var(--clr-primary-light);
+            border: 1.5px solid var(--clr-primary-light);
+        }
+
+        .day-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            user-select: none;
+            flex-wrap: wrap;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+        
+        .day-header-flex:hover {
+            color: var(--clr-accent);
+        }
+
+        .day-section h2 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+            color: var(--clr-accent);
+            user-select: none;
+            text-align: left;
+        }
+
+        .day-header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Progress Bar Styles */
+        .progress-bar-container {
+            width: 120px;
+            height: 10px;
+            background-color: var(--clr-bg-blur);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--clr-primary);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--clr-accent);
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .task-progress-box {
+            background: var(--clr-bg-blur);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            user-select: none;
+            text-align: center;
+        }
+
+        .collapse-icon {
+            font-size: 1.25rem;
+            transition: transform var(--transition-fast);
+        }
+
+        .collapse-icon.rotated {
+            transform: rotate(-180deg);
+        }
+
+        .day-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .day-content.expanded {
+            max-height: 1000px; /* A large value to allow for smooth animation */
+        }
+
+        .parent-consent-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            background: var(--clr-bg-blur);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px 1px rgba(255 255 255 / 0.1);
+            user-select: none;
+        }
+
+        .parent-consent-box .check-container {
+            border-color: var(--clr-primary);
+            width: 28px;
+            height: 28px;
+        }
+
+        .parent-consent-box .checkmark::before {
+            font-size: 14px;
+        }
+
+        .parent-consent-box p {
+            margin: 0;
+            color: var(--clr-muted);
+        }
+        
+        .parent-consent-box input[type="text"] {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: var(--clr-text);
+            font-style: italic;
+            letter-spacing: 0.015em;
+            user-select: text;
+            padding: 0 0 0 0.5rem;
+            outline-offset: 2px;
+            outline-color: var(--clr-primary-light);
+            transition: border-color 0.25s ease;
+        }
+        
+        .parent-consent-box input[type="text"]:focus {
+            border-bottom: 1.5px solid var(--clr-accent);
+            outline: none;
+        }
+        
+        .parent-consent-box input[type="text"]::placeholder {
+             color: var(--clr-muted);
+             font-style: italic;
+        }
+
+        .time-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background: var(--clr-bg-blur);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: inset 0 0 15px 1px rgba(255 255 255 / 0.1);
+            cursor: pointer;
+            user-select: none;
+            transition: background-color var(--transition-fast);
+            position: relative;
+        }
+
+        .task-card:focus-visible,
+        .task-card:hover {
+            background: rgba(127, 90, 240, 0.22);
+            outline: none;
+            border: 1.5px solid var(--clr-primary);
+        }
+
+        .time-label {
+            font-family: 'Outfit', monospace;
+            font-weight: 600;
+            min-width: 95px;
+            color: var(--clr-muted);
+            font-size: 0.95rem;
+            user-select: text;
+            flex-shrink: 0;
+        }
+
+        .task-text {
+            flex-grow: 1;
+            font-style: italic;
+            color: var(--clr-text);
+            white-space: pre-wrap;
+            font-size: 1rem;
+            letter-spacing: 0.015em;
+            user-select: text;
+            transition: color 0.3s ease;
+        }
+
+        .add-task-btn {
+            background: var(--clr-primary);
+            color: var(--clr-text);
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .add-task-btn:hover {
+            background-color: var(--clr-primary-light);
+        }
+
+        .delete-task-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: transparent;
+            border: none;
+            color: var(--clr-error);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .delete-task-btn:hover {
+            opacity: 1;
+        }
+
+        /* ==== EDIT MODAL ==== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--clr-bg-blur);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 0 40px 10px var(--clr-primary-light);
+            max-width: 480px;
+            width: 90%;
+            color: var(--clr-text);
+            font-weight: 600;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal h3 {
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-align: center;
+            margin: 0;
+            user-select: text;
+        }
+
+        .modal textarea,
+        .modal input[type='password'] {
+            width: 100%;
+            font-family: 'Outfit', monospace;
+            font-size: 1.05rem;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--clr-primary-light);
+            background: transparent;
+            color: var(--clr-text);
+            resize: vertical;
+            min-height: 120px;
+            outline-offset: 2px;
+            outline-color: var(--clr-primary-light);
+            transition: border-color 0.25s ease;
+            user-select: text;
+        }
+
+        .modal textarea::placeholder,
+        .modal input[type='password']::placeholder {
+            color: var(--clr-muted);
+            font-style: italic;
+        }
+
+        .modal textarea:focus,
+        .modal input[type='password']:focus {
+            border-color: var(--clr-accent);
+            outline-color: var(--clr-accent);
+        }
+
+        .modal-as {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.7rem;
+            user-select: none;
+        }
+
+        a {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.65rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 0 10px transparent;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
+            text-decoration: none;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--clr-accent);
+            outline-offset: 3px;
+        }
+
+        .btn-save {
+            background: var(--clr-primary);
+            color: var(--clr-text);
+        }
+
+        .btn-save:hover {
+            background: var(--clr-primary-light);
+        }
+
+        .btn-clear {
+            background: var(--clr-error);
+            color: var(--clr-text);
+        }
+
+        .btn-clear:hover {
+            background: #fca5a5;
+        }
+
+        .btn-cancel {
+            background: #4c51bf;
+            color: var(--clr-text);
+        }
+
+        .btn-cancel:hover {
+            background: #373ca8;
+        }
+
+        /* ==== CONFIRMATION MODAL ==== */
+        #confirmationModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #confirmationModal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .confirmation-box {
+            background: var(--clr-bg-blur);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 0 40px 10px var(--clr-error);
+            max-width: 400px;
+            width: 90%;
+            color: var(--clr-text);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .confirmation-box h4 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .confirmation-as {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-confirm {
+            background: var(--clr-error);
+            color: var(--clr-text);
+            font-weight: 700;
+        }
+
+        .btn-confirm:hover {
+            background: #fca5a5;
+        }
+
+        .btn-deny {
+            background: #4c51bf;
+            color: var(--clr-text);
+            font-weight: 700;
+        }
+
+        .btn-deny:hover {
+            background: #373ca8;
+        }
+
+        /* ==== FOOTER ==== */
+        footer {
+            margin-top: 3rem;
+            color: var(--clr-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            user-select: none;
+            letter-spacing: 0.04em;
+        }
+
+        /* ==== RESPONSIVE ==== */
+        @media (max-width: 720px) {
+            .tuition-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .tuition-day {
+                font-size: 1rem;
+                min-width: 60px;
+            }
+
+            .time-label {
+                min-width: 80px;
+                font-size: 0.9rem;
+            }
+
+            .task-text {
+                font-size: 0.9rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .day-header-right {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: flex-start;
+                margin-top: 0.5rem;
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tuition-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tuition-day {
+                min-width: 50px;
+                font-size: 0.95rem;
+            }
+
+            .time-label {
+                min-width: 70px;
+                font-size: 0.8rem;
+            }
+
+            .task-text {
+                font-size: 0.85rem;
+            }
+
+            .modal {
+                max-width: 95vw;
+            }
+
+            .day-header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 0.5rem;
+            }
+
+            .day-header-right {
+                width: 100%;
+                margin-top: 0.5rem;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+            }
+            
+            .parent-consent-box {
+                flex-wrap: wrap;
+            }
+
+            .parent-consent-box input[type="text"] {
+                width: 100%;
+                margin-top: 0.5rem;
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="appContainer">
+        <h1> Weekly Scheduler</h1>
+        <p class="subtitle">
+            Mobile-friendly study planner with tuition timings & checklist
+        </p>
+        <div id="user-greeting"></div>
+
+        <section class="tuition-section" aria-label="Tuition Timings">
+            <div class="section-header">
+                <h2>Tuition Timings</h2>
+                <div class="action-as">
+                    <a id="addTuitionBtn" aria-label="Add new tuition slot">
+                        <i class="fas fa-plus"></i> Add Slot
+                    </a>
+                    <a id="clearTuitionChecksBtn" aria-label="Clear all tuition checkboxes">
+                        <i class="fas fa-check-circle"></i> Clear Checks
+                    </a>
+                </div>
+            </div>
+            <div class="tuition-grid" id="tuitionGrid" tabindex="0"></div>
+        </section>
+
+        <main id="scheduleContainer" tabindex="0" aria-label="Weekly Study Schedule">
+            <div class="section-header">
+                <h2>Weekly Schedule</h2>
+                <div class="action-as">
+                    <a id="clearAllTasksBtn" aria-label="Clear all daily tasks">
+                        <i class="fas fa-trash-alt"></i> Clear All Tasks
+                    </a>
+                </div>
+            </div>
+            <div id="scheduleContent"></div>
+        </main>
+
+        <footer>
+            &copy; 2025 Scheduler. All rights reserved.
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+        <div class="modal" role="document">
+            <h3 id="modalTitle"></h3>
+            <textarea id="modalTextarea" placeholder="Enter details here..." aria-label="Edit content"></textarea>
+            <div class="modal-as">
+                <a class="btn-save" id="btnSave" aria-label="Save changes">
+                    Save
+                </a>
+                <a class="btn-clear" id="btnClear" aria-label="Clear content">
+                    Clear
+                </a>
+                <a class="btn-cancel" id="btn-cancel" aria-label="Cancel editing">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="confirmation-box">
+            <h4>Are you sure?</h4>
+            <div class="confirmation-as">
+                <a class="btn-confirm" id="btn-confirm-yes">Yes</a>
+                <a class="btn-deny" id="btn-confirm-no">No</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            const DAYS = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+            ];
+
+            const TIMES = [
+                "16:00 – 16:30",
+                "16:30 – 17:30",
+                "17:30 – 18:30",
+                "18:30 – 18:45",
+                "18:45 – 19:45",
+                "19:45 – 20:15",
+                "20:15 – 21:15",
+                "21:15 – 22:15",
+                "22:15 – 22:45",
+                "22:45 – 23:00",
+            ];
+
+            const baseSchedule = {
+                Monday: [
+                    "Snack + light break",
+                    "Maths (new topic or past paper problems)",
+                    "Physics (concepts + numericals)",
+                    "Short break",
+                    "Chemistry (theory + equations)",
+                    "Dinner break",
+                    "Maths revision (formulas + 5 sums)",
+                    "Science diagrams + quick notes",
+                    "Past paper short questions (mixed subjects)",
+                    "Light reading / relaxation before bed",
+                ],
+                Tuesday: [
+                    "Snack + rest",
+                    "History/Civics (events, dates, short notes)",
+                    "Geography (maps, 5-mark answers)",
+                    "Break",
+                    "English Literature (poem/prose revision)",
+                    "Dinner",
+                    "English Language (essay, letter, grammar)",
+                    "History quick revision + past paper questions",
+                    "Geography diagram/map practice",
+                    "Tuition slot",
+                ],
+                Wednesday: [
+                    "Break/snack",
+                    "Biology (diagrams, definitions)",
+                    "Physics problem solving",
+                    "Break",
+                    "Second Language (Bengali/Hindi) literature",
+                    "Dinner",
+                    "Second Language grammar + writing",
+                    "Chemistry reaction revision",
+                    "Science quick quiz (self-test)",
+                    "Tuition slot",
+                ],
+                Thursday: [
+                    "Snack",
+                    "New Maths chapter",
+                    "Maths past paper practice",
+                    "Break",
+                    "Weak topic in Maths",
+                    "Dinner",
+                    "Physics numericals",
+                    "Chemistry formulas",
+                    "Quick revision (flashcards)",
+                    "Tuition slot",
+                ],
+                Friday: [
+                    "Break",
+                    "History long answers",
+                    "Geography theory",
+                    "Break",
+                    "History past paper practice",
+                    "Dinner",
+                    "Geography maps",
+                    "Revision of both",
+                    "Light subject / read literature",
+                    "Tuition slot",
+                ],
+                Saturday: [
+                    "Break",
+                    "Maths problems",
+                    "Science quick revision",
+                    "Break",
+                    "History & Civics short notes",
+                    "Dinner",
+                    "Geography diagrams/maps",
+                    "Languages",
+                    "Past paper mixed questions",
+                    "Tuition slot",
+                ],
+                Sunday: [
+                    "Weak topics",
+                    "Past paper (timed)",
+                    "Science diagrams/maps practice",
+                    "Dinner + relax",
+                    "Flashcards/short notes",
+                    "Oral revision (say answers aloud)",
+                    "Early light reading + sleep prep",
+                    "Tuition slot",
+                    "",
+                    "",
+                ],
+            };
+
+            let tuitionTimings = [
+                { day: "Monday", time: "17:00 – 18:00", desc: "Maths Tuition" },
+                { day: "Tuesday", time: "18:00 – 19:00", desc: "Science Tuition" },
+                { day: "Wednesday", time: "16:00 – 17:00", desc: "English Tuition" },
+            ];
+
+            const STORAGE_KEYS = {
+                scheduleData: "icseWeeklySchedulerData",
+                tuitionData: "icseTuitionTimingsData",
+                checklistData: "icseChecklistData",
+                parentalConsentData: "icseParentalConsentData",
+                parentalSignatureData: "icseParentalSignatureData"
+            };
+
+            let scheduleData = {};
+            let tuitionData = [];
+            let checklistData = {};
+            let parentalConsentData = {};
+            let parentalSignatureData = {};
+            let username = '';
+
+            const modal = document.getElementById("modal");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalTextarea = document.getElementById("modalTextarea");
+            const btnSave = document.getElementById("btnSave");
+            const btnClear = document.getElementById("btnClear");
+            const btnCancel = document.getElementById("btn-cancel");
+
+            const confirmationModal = document.getElementById("confirmationModal");
+            const btnConfirmYes = document.getElementById("btn-confirm-yes");
+            const btnConfirmNo = document.getElementById("btn-confirm-no");
+            let confirmationCallback = null;
+
+            const addTuitionBtn = document.getElementById("addTuitionBtn");
+            const clearTuitionChecksBtn = document.getElementById("clearTuitionChecksBtn");
+            const clearAllTasksBtn = document.getElementById("clearAllTasksBtn");
+            const scheduleContent = document.getElementById("scheduleContent");
+            const tuitionGrid = document.getElementById("tuitionGrid");
+
+            let currentEditDay = null;
+            let currentEditIndex = null;
+            let currentDeleteType = null;
+            let currentDeleteIndex = null;
+
+            // --- LOCAL STORAGE FUNCTIONS ---
+            function saveData() {
+                localStorage.setItem(STORAGE_KEYS.scheduleData, JSON.stringify(scheduleData));
+                localStorage.setItem(STORAGE_KEYS.tuitionData, JSON.stringify(tuitionData));
+                localStorage.setItem(STORAGE_KEYS.checklistData, JSON.stringify(checklistData));
+                localStorage.setItem(STORAGE_KEYS.parentalConsentData, JSON.stringify(parentalConsentData));
+                localStorage.setItem(STORAGE_KEYS.parentalSignatureData, JSON.stringify(parentalSignatureData));
+            }
+
+            function loadData() {
+                const sData = localStorage.getItem(STORAGE_KEYS.scheduleData);
+                const tData = localStorage.getItem(STORAGE_KEYS.tuitionData);
+                const cData = localStorage.getItem(STORAGE_KEYS.checklistData);
+                const pData = localStorage.getItem(STORAGE_KEYS.parentalConsentData);
+                const psData = localStorage.getItem(STORAGE_KEYS.parentalSignatureData);
+
+                scheduleData = sData ? JSON.parse(sData) : JSON.parse(JSON.stringify(baseSchedule));
+                tuitionData = tData ? JSON.parse(tData) : JSON.parse(JSON.stringify(tuitionTimings));
+                checklistData = cData ? JSON.parse(cData) : {};
+                parentalConsentData = pData ? JSON.parse(pData) : {};
+                parentalSignatureData = psData ? JSON.parse(psData) : {};
+            }
+
+            // --- UI RENDERING FUNCTIONS ---
+            function renderTuition() {
+                tuitionGrid.innerHTML = "";
+                tuitionData.forEach((item, i) => {
+                    const card = document.createElement("div");
+                    card.className = "tuition-card";
+
+                    const dayElem = document.createElement("input");
+                    dayElem.type = "text";
+                    dayElem.value = item.day;
+                    dayElem.className = "tuition-day";
+                    dayElem.autocomplete = "off";
+                    dayElem.spellcheck = false;
+                    dayElem.addEventListener("change", (e) => {
+                        tuitionData[i].day = e.target.value.trim() || "Day";
+                        saveData();
+                    });
+
+                    const timeElem = document.createElement("input");
+                    timeElem.type = "text";
+                    timeElem.value = item.time;
+                    timeElem.className = "tuition-time";
+                    timeElem.autocomplete = "off";
+                    timeElem.spellcheck = false;
+                    timeElem.addEventListener("change", (e) => {
+                        tuitionData[i].time = e.target.value.trim() || "Time";
+                        saveData();
+                    });
+
+                    const descElem = document.createElement("input");
+                    descElem.type = "text";
+                    descElem.value = item.desc || "";
+                    descElem.className = "tuition-desc";
+                    descElem.autocomplete = "off";
+                    descElem.spellcheck = false;
+                    descElem.addEventListener("change", (e) => {
+                        tuitionData[i].desc = e.target.value.trim() || "Add description...";
+                        saveData();
+                    });
+
+                    const tuitionActions = document.createElement("div");
+                    tuitionActions.className = "tuition-actions";
+
+                    const label = document.createElement("label");
+                    label.className = "check-container";
+                    label.setAttribute(
+                        "aria-label",
+                        `Mark tuition done for ${item.day} at ${item.time}`
+                    );
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.checked = !!checklistData[`tuition-${i}`];
+                    checkbox.addEventListener("change", (e) => {
+                        checklistData[`tuition-${i}`] = e.target.checked;
+                        saveData();
+                    });
+                    const checkmark = document.createElement("span");
+                    checkmark.className = "checkmark";
+                    label.appendChild(checkbox);
+                    label.appendChild(checkmark);
+
+                    const deleteBtn = document.createElement("a");
+                    deleteBtn.className = "delete-btn";
+                    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    deleteBtn.addEventListener("click", () => {
+                        showConfirmationModal(() => {
+                            tuitionData.splice(i, 1);
+                            delete checklistData[`tuition-${i}`];
+                            saveData();
+                            renderTuition();
+                        });
+                    });
+
+                    tuitionActions.append(label, deleteBtn);
+                    card.append(dayElem, timeElem, descElem, tuitionActions);
+                    tuitionGrid.appendChild(card);
+                });
+            }
+
+            function renderSchedule() {
+                scheduleContent.innerHTML = "";
+                const today = new Date().toLocaleDateString("en-US", { weekday: 'long' });
+
+                DAYS.forEach((day) => {
+                    const section = document.createElement("section");
+                    section.className = "day-section";
+                    section.setAttribute("aria-label", `Study schedule for ${day}`);
+
+                    const dayHeader = document.createElement("div");
+                    dayHeader.className = "day-header-flex";
+                    dayHeader.setAttribute("role", "button");
+                    dayHeader.setAttribute("tabindex", "0");
+                    dayHeader.setAttribute("aria-expanded", day === today);
+
+                    const h2 = document.createElement("h2");
+                    h2.textContent = day;
+
+                    const dayHeaderRight = document.createElement("div");
+                    dayHeaderRight.className = "day-header-right";
+
+                    const progressBarContainer = document.createElement("div");
+                    progressBarContainer.className = "progress-bar-container";
+
+                    const progressBarFill = document.createElement("div");
+                    progressBarFill.className = "progress-bar-fill";
+                    progressBarFill.id = `progress-bar-fill-${day}`;
+                    progressBarContainer.appendChild(progressBarFill);
+
+                    const taskProgressBox = document.createElement("div");
+                    taskProgressBox.className = "task-progress-box";
+                    taskProgressBox.id = `task-progress-${day}`;
+
+                    const collapseIcon = document.createElement("i");
+                    collapseIcon.className = `fas fa-chevron-down collapse-icon ${day === today ? 'rotated' : ''}`;
+                    
+                    dayHeaderRight.append(progressBarContainer, taskProgressBox, collapseIcon);
+                    dayHeader.append(h2, dayHeaderRight);
+                    section.appendChild(dayHeader);
+                    
+                    const dayContent = document.createElement("div");
+                    dayContent.className = `day-content ${day === today ? 'expanded' : ''}`;
+
+                    const taskList = document.createElement("div");
+                    taskList.className = "time-task-list";
+
+                    const tasks = scheduleData[day] || [];
+
+                    tasks.forEach((task, idx) => {
+                        const card = document.createElement("div");
+                        card.className = "task-card";
+                        card.setAttribute("tabindex", "0");
+                        card.setAttribute("role", "button");
+                        card.setAttribute(
+                            "aria-label",
+                            `Edit task at ${TIMES[idx] || "new time"} on ${day}`
+                        );
+
+                        const timeLabel = document.createElement("div");
+                        timeLabel.className = "time-label";
+                        timeLabel.textContent = TIMES[idx] || "Time...";
+
+                        const taskText = document.createElement("div");
+                        taskText.className = "task-text";
+                        taskText.textContent = task || "Add task...";
+
+                        const label = document.createElement("label");
+                        label.className = "check-container";
+                        label.setAttribute(
+                            "aria-label",
+                            `Mark task done at ${TIMES[idx] || "new time"} on ${day}`
+                        );
+
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.checked = !!checklistData[`${day}-${idx}`];
+                        checkbox.addEventListener("change", (e) => {
+                            checklistData[`${day}-${idx}`] = e.target.checked;
+                            saveData();
+                            updateTaskPercentage(day);
+                        });
+
+                        const checkmark = document.createElement("span");
+                        checkmark.className = "checkmark";
+
+                        label.appendChild(checkbox);
+                        label.appendChild(checkmark);
+
+                        card.append(timeLabel, taskText, label);
+
+                        const deleteTaskBtn = document.createElement("a");
+                        deleteTaskBtn.className = "delete-task-btn";
+                        deleteTaskBtn.innerHTML = '<i class="fas fa-times-circle"></i>';
+                        deleteTaskBtn.addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            showConfirmationModal(() => {
+                                scheduleData[day].splice(idx, 1);
+                                delete checklistData[`${day}-${idx}`];
+                                saveData();
+                                renderSchedule();
+                            });
+                        });
+                        card.appendChild(deleteTaskBtn);
+
+                        card.addEventListener("click", () => openModal(day, idx));
+                        card.addEventListener("keydown", (e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                openModal(day, idx);
+                            }
+                        });
+
+                        taskList.appendChild(card);
+                    });
+
+                    const addTaskBtn = document.createElement("a");
+                    addTaskBtn.className = "add-task-btn";
+                    addTaskBtn.innerHTML = '<i class="fas fa-plus"></i> Add Task';
+                    addTaskBtn.addEventListener("click", () => {
+                        scheduleData[day].push("Add new task...");
+                        saveData();
+                        renderSchedule();
+                    });
+                    dayContent.appendChild(taskList);
+                    dayContent.appendChild(addTaskBtn);
+
+                    const parentConsentBox = document.createElement("div");
+                    parentConsentBox.className = "parent-consent-box";
+
+                    const parentConsentLabel = document.createElement("label");
+                    parentConsentLabel.className = "check-container";
+                    parentConsentLabel.setAttribute("aria-label", `Parental consent for ${day}`);
+
+                    const parentConsentCheckbox = document.createElement("input");
+                    parentConsentCheckbox.type = "checkbox";
+                    parentConsentCheckbox.checked = !!parentalConsentData[day];
+                    parentConsentCheckbox.addEventListener("change", (e) => {
+                        parentalConsentData[day] = e.target.checked;
+                        saveData();
+                    });
+
+                    const parentConsentCheckmark = document.createElement("span");
+                    parentConsentCheckmark.className = "checkmark";
+
+                    const parentSignatureInput = document.createElement('input');
+                    parentSignatureInput.type = 'text';
+                    parentSignatureInput.placeholder = 'Parent Signature';
+                    parentSignatureInput.value = parentalSignatureData[day] || '';
+                    parentSignatureInput.addEventListener('input', (e) => {
+                        parentalSignatureData[day] = e.target.value;
+                        saveData();
+                    });
+
+                    parentConsentLabel.append(parentConsentCheckbox, parentConsentCheckmark);
+
+                    const parentConsentText = document.createElement("p");
+                    parentConsentText.textContent = "Parental Consent & Signature";
+                    parentConsentText.style.display = 'none';
+
+                    parentConsentBox.append(parentConsentLabel, parentSignatureInput);
+                    dayContent.appendChild(parentConsentBox);
+                    section.appendChild(dayContent);
+
+                    scheduleContent.appendChild(section);
+                    updateTaskPercentage(day);
+                    
+                    dayHeader.addEventListener('click', () => {
+                        const isExpanded = dayContent.classList.toggle('expanded');
+                        collapseIcon.classList.toggle('rotated', isExpanded);
+                        dayHeader.setAttribute('aria-expanded', isExpanded);
+                    });
+                    dayHeader.addEventListener('keydown', (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            dayHeader.click();
+                        }
+                    });
+                });
+            }
+
+            // --- MODAL FUNCTIONS ---
+            function updateTaskPercentage(day) {
+                const totalTasks = scheduleData[day] ? scheduleData[day].length : 0;
+                if (totalTasks === 0) {
+                   document.getElementById(`task-progress-${day}`).textContent = `Completed: N/A`;
+                   document.getElementById(`progress-bar-fill-${day}`).style.width = `0%`;
+                   return;
+                }
+                
+                let completedTasks = 0;
+                for (let i = 0; i < totalTasks; i++) {
+                    if (checklistData[`${day}-${i}`]) {
+                        completedTasks++;
+                    }
+                }
+
+                let percentage = Math.round((completedTasks / totalTasks) * 100);
+                document.getElementById(`task-progress-${day}`).textContent = `Completed: ${percentage}%`;
+                document.getElementById(`progress-bar-fill-${day}`).style.width = `${percentage}%`;
+            }
+
+            function openModal(day, taskIndex) {
+                currentEditDay = day;
+                currentEditIndex = taskIndex;
+                const time = TIMES[taskIndex] || "New Task";
+                modalTitle.textContent = `${currentEditDay} — ${time}`;
+                modalTextarea.value = scheduleData[currentEditDay][currentEditIndex];
+                modal.classList.add("show");
+                modalTextarea.focus();
+            }
+
+            function closeModal() {
+                modal.classList.remove("show");
+                currentEditDay = null;
+                currentEditIndex = null;
+            }
+
+            btnSave.addEventListener("click", () => {
+                const val = modalTextarea.value.trim();
+                if (val) {
+                    scheduleData[currentEditDay][currentEditIndex] = val;
+                } else {
+                    scheduleData[currentEditDay][currentEditIndex] = "Add task...";
+                }
+                saveData();
+                renderSchedule();
+                closeModal();
+            });
+
+            btnClear.addEventListener("click", () => {
+                modalTextarea.value = "";
+            });
+
+            btnCancel.addEventListener("click", closeModal);
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && modal.classList.contains("show")) {
+                    closeModal();
+                }
+            });
+
+            // --- CONFIRMATION MODAL FUNCTIONS ---
+            function showConfirmationModal(callback) {
+                confirmationCallback = callback;
+                confirmationModal.classList.add("show");
+            }
+
+            function hideConfirmationModal() {
+                confirmationModal.classList.remove("show");
+                confirmationCallback = null;
+            }
+
+            btnConfirmYes.addEventListener("click", () => {
+                if (confirmationCallback) {
+                    confirmationCallback();
+                }
+                hideConfirmationModal();
+            });
+
+            btnConfirmNo.addEventListener("click", () => {
+                hideConfirmationModal();
+            });
+            
+            // --- MAIN BUTTON EVENT LISTENERS ---
+            addTuitionBtn.addEventListener("click", () => {
+                tuitionData.push({ day: "Day", time: "Time", desc: "Description" });
+                saveData();
+                renderTuition();
+            });
+
+            clearTuitionChecksBtn.addEventListener("click", () => {
+                showConfirmationModal(() => {
+                    for (const key in checklistData) {
+                        if (key.startsWith('tuition-')) {
+                            delete checklistData[key];
+                        }
+                    }
+                    saveData();
+                    renderTuition();
+                });
+            });
+
+            clearAllTasksBtn.addEventListener("click", () => {
+                 showConfirmationModal(() => {
+                    scheduleData = JSON.parse(JSON.stringify(baseSchedule));
+                    checklistData = {};
+                    parentalConsentData = {};
+                    parentalSignatureData = {};
+                    saveData();
+                    renderSchedule();
+                });
+            });
+            
+            // --- APP INITIALIZATION ---
+            async function initializeApp() {
+                // Get JWT and username from localStorage
+                const jwt = localStorage.getItem('schedulerJWT');
+                username = localStorage.getItem('schedulerUsername');
+                if (!jwt || !username) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                document.getElementById('user-greeting').textContent = `Welcome back, ${username}!`;
+
+                // Fetch routine from secure server
+                let routine = null;
+                try {
+                    const response = await fetch('http://localhost:4000/api/routine', {
+                        headers: { 'Authorization': 'Bearer ' + jwt }
+                    });
+                    const result = await response.json();
+                    if (result.routine) {
+                        routine = result.routine;
+                    }
+                } catch (err) {
+                    // fallback to empty
+                }
+
+                // If no routine, use baseSchedule
+                scheduleData = routine && routine.scheduleData ? routine.scheduleData : JSON.parse(JSON.stringify(baseSchedule));
+                tuitionData = routine && routine.tuitionData ? routine.tuitionData : JSON.parse(JSON.stringify(tuitionTimings));
+                checklistData = routine && routine.checklistData ? routine.checklistData : {};
+                parentalConsentData = routine && routine.parentalConsentData ? routine.parentalConsentData : {};
+                parentalSignatureData = routine && routine.parentalSignatureData ? routine.parentalSignatureData : {};
+
+                renderTuition();
+                renderSchedule();
+            }
+
+            // Save data to secure server
+            async function saveData() {
+                const jwt = localStorage.getItem('schedulerJWT');
+                if (!jwt) return;
+                const routine = {
+                    scheduleData,
+                    tuitionData,
+                    checklistData,
+                    parentalConsentData,
+                    parentalSignatureData
+                };
+                try {
+                    await fetch('http://localhost:4000/api/routine', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + jwt
+                        },
+                        body: JSON.stringify({ routine })
+                    });
+                } catch (err) {}
+            }
+
+            window.addEventListener("load", initializeApp);
+        })();
+    </script>
+</body>
+</html>

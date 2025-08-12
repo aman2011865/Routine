@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduler - Features</title>
+    <meta name="description" content="Explore Scheduler's powerful features for modern study planning." />
+    <meta name="theme-color" content="#7f5af0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Dark blue background */
+            color: #f1f5f9; /* Light text color */
+        }
+        .bg-pattern {
+            background-image: radial-gradient(circle at 10% 20%, #1e293b 0%, #0f172a 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header - Copied from homepage for consistency -->
+    <header class="bg-slate-800 p-4 shadow-lg fixed w-full z-10 top-0">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="home.html" class="text-2xl font-bold text-indigo-400"> Scheduler</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="home.html" class="hover:text-indigo-400 transition-colors">Home</a>
+                <a href="scheduler.html" class="hover:text-indigo-400 transition-colors">Scheduler</a>
+                <a href="features.html" class="hover:text-indigo-400 transition-colors">Features</a>
+                <a href="contact.html" class="hover:text-indigo-400 transition-colors">Contact</a>
+            </div>
+            <a href="login.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                Get Started
+            </a>
+            <!-- Mobile Menu a -->
+            <a id="mobile-menu-a" class="md:hidden text-slate-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </a>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 mt-4 rounded-lg shadow-md p-4 space-y-2">
+            <a href="home.html" class="block hover:text-indigo-400 transition-colors">Home</a>
+            <a href="scheduler.html" class="block hover:text-indigo-400 transition-colors">Scheduler</a>
+            <a href="features.html" class="block hover:text-indigo-400 transition-colors">Features</a>
+            <a href="contact.html" class="block hover:text-indigo-400 transition-colors">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        <!-- Features Hero Section -->
+        <section class="bg-pattern py-20 md:py-32 text-center">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-4">
+                    Powerful Features to Maximize Your Studies
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-300 max-w-2xl mx-auto mb-8">
+                    Discover how the Scheduler helps you stay organized, on track, and ready for your exams.
+                </p>
+            </div>
+        </section>
+
+        <!-- Detailed Features Section -->
+        <section class="py-16 md:py-24 bg-slate-900">
+            <div class="container mx-auto px-4">
+                <!-- Feature 1: Weekly Planner -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16 mb-20">
+                    <div class="md:w-1/2">
+                        <div class="text-6xl text-indigo-400 mb-4 md:text-left text-center">
+                            <!-- SVG Icon for Planner -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-days"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path><path d="M8 18h.01"></path><path d="M12 18h.01"></path><path d="M16 18h.01"></path></svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 md:text-left text-center">Intuitive Weekly Planner</h3>
+                        <p class="text-slate-300 md:text-left text-center">
+                            Effortlessly plan your entire week's schedule. Drag and drop study blocks, add breaks, and visualize your time to ensure a balanced and productive week.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 p-8">
+                        <div class="flex items-center justify-center h-64 rounded-xl bg-gradient-to-br from-indigo-500/30 via-slate-700/80 to-indigo-900/60 border-2 border-indigo-400/20 shadow-lg">
+                            <img src="feature-planner.jpg" alt="Weekly Planner Screenshot" class="max-h-48 max-w-full object-contain rounded-lg drop-shadow-xl transition-transform duration-300 hover:scale-105" loading="lazy" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Interactive Checklist -->
+                <div class="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16 mb-20">
+                    <div class="md:w-1/2">
+                        <div class="text-6xl text-cyan-400 mb-4 md:text-left text-center">
+                            <!-- SVG Icon for Checklist -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 md:text-left text-center">Interactive Progress Tracker</h3>
+                        <p class="text-slate-300 md:text-left text-center">
+                            Keep track of your daily tasks and study goals with a satisfying interactive checklist. Mark off subjects as you complete them to see your progress instantly.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 p-8">
+                        <div class="flex items-center justify-center h-64 rounded-xl bg-gradient-to-br from-cyan-400/30 via-slate-700/80 to-cyan-900/60 border-2 border-cyan-400/20 shadow-lg">
+                            <img src="feature-checklist.jpg" alt="Interactive Checklist Screenshot" class="max-h-48 max-w-full object-contain rounded-lg drop-shadow-xl transition-transform duration-300 hover:scale-105" loading="lazy" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Parental Consent -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
+                    <div class="md:w-1/2">
+                        <div class="text-6xl text-emerald-400 mb-4 md:text-left text-center">
+                            <!-- SVG Icon for Signature -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-line"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 md:text-left text-center">Parental Accountability</h3>
+                        <p class="text-slate-300 md:text-left text-center">
+                            Stay on top of your study plan with a unique feature that allows parents to review and sign off on your weekly progress, fostering a collaborative approach to your studies.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 rounded-2xl overflow-hidden shadow-2xl bg-slate-800 p-8">
+                        <div class="flex items-center justify-center h-64 rounded-xl bg-gradient-to-br from-emerald-400/30 via-slate-700/80 to-emerald-900/60 border-2 border-emerald-400/20 shadow-lg">
+                            <img src="feature-parental.jpg" alt="Parental Consent Screenshot" class="max-h-48 max-w-full object-contain rounded-lg drop-shadow-xl transition-transform duration-300 hover:scale-105" loading="lazy" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - Copied from homepage for consistency -->
+    <footer class="bg-slate-800 p-6 text-center text-slate-400 shadow-inner mt-auto">
+        <p class="mb-4">&copy; 2025 Scheduler. All rights reserved.</p>
+        <div class="flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com" target="_blank" rel="noopener" class="hover:text-indigo-400 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c-.6-.7-1.4-1.4-2.3-1.9 1.1 0 2 1 2 2v1c-1.3-1-3.2-1.3-5.2-1.4 0 0-2 0-3 1.3-1.3 1.3-1 3.5-1 3.5v.3c-2.3.4-4.5-1.2-5.7-3.2 0 0-1 2.5-1 3.5 0 1.2 1.5 2.1 2.5 2.5-.2 0-.4-.1-.6-.1-.2 0-.4-.1-.6-.2 0 1 1 2 2.5 2.5-1.5 1-3 1-5 1 0 0-1 0-1-.5 2 1 4 1 6 1 0 0 4-1 4-3v-1c1-1 2-2 2-3 0-1-.5-2-1-3 1-1 2-2 2-4z"/></svg></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="hover:text-indigo-400 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="hover:text-indigo-400 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+        </div>
+    </footer>
+
+    <!-- JavaScript for mobile menu toggle -->
+    <script>
+        document.getElementById('mobile-menu-a').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
